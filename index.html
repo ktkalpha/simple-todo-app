@@ -47,7 +47,7 @@
         function checkText(){
             const textbox = document.querySelector("#text");
             const todolist = document.querySelector("#TodoList");
-            if(!document.querySelector("#"+changeNumToSay(textbox.value..replaceAll(' ', '_')))){
+            if(!document.querySelector("#"+changeNumToSay(textbox.value.replaceAll(' ', '_')))){
                 todolist.innerHTML += `<div><label class="badge text-bg-primary fs-3"><input type="checkbox" onclick="checkTodoDone(this.id)" id="` + changeNumToSay(textbox.value.replaceAll(' ', '_')) +`"> `+ textbox.value +`<button id="deleteButton" onclick="deleteTodo(this)"> X</button></label><br><div>`;
                 todos.push(textbox.value.replaceAll(' ', '_'));
                 localStorage.setItem("todolist", JSON.stringify(todos));
