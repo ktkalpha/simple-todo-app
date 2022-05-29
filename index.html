@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+    <title>Simple Todo</title>
+    <style>
+        body{
+            display: grid;
+            text-align: center;
+        }
+        label{
+            border: 1px solid black;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="text" aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="button" onclick="checkText()">Add</button>
+    </div>
+    <div id="TodoList" name="123">
+        <br>
+    </div>
+    <script>
+        let output = localStorage.getItem("todolist");
+        let todos = JSON.parse(output);
+        if(todos == null)
+            todos = [];
+        const todolist = document.querySelector("#TodoList");
+        todos.forEach(element => {
+            todolist.innerHTML += `<div><label class="badge text-bg-primary fs-3"><input type="checkbox" onclick="checkTodoDone(this.id)" id="` + changeNumToSay(element) +`"> ` + element.replaceAll('_', ' ') +`<button id="deleteButton" onclick="deleteTodo(this)"> X</button></label><br><div>`;
+        });
+
+        function checkTodoDone(id){
+            const checkbox = document.querySelector("#"+id);
+            if(checkbox.checked){
+                checkbox.parentElement.style.cssText =
+            "text-decoration: line-through;";
+            }else{
+                checkbox.parentElement.style.cssText =
+            "";
+            }
+                
+        }
+        function checkText(){
+            const textbox = document.querySelector("#text");
+            const todolist = document.querySelector("#TodoList");
+            if(!document.querySelector("#"+changeNumToSay(textbox.value))){
+                todolist.innerHTML += `<div><label class="badge text-bg-primary fs-3"><input type="checkbox" onclick="checkTodoDone(this.id)" id="` + changeNumToSay(textbox.value.replaceAll(' ', '_')) +`"> `+ textbox.value +`<button id="deleteButton" onclick="deleteTodo(this)"> X</button></label><br><div>`;
+                todos.push(textbox.value.replaceAll(' ', '_'));
+                localStorage.setItem("todolist", JSON.stringify(todos));
+            }
+        }
+        function deleteTodo(elm){
+            const del_todo = elm.parentElement.querySelector('input');
+            let todos_del = todos.filter(function(data) {
+                return !(changeNumToSay(data) == del_todo.id);
+            });
+            console.log(todos_del);
+            todos = todos_del;
+            console.log(todos);
+            localStorage.setItem("todolist", JSON.stringify(todos));
+            const btn = document.querySelector("#"+elm.id);
+            console.log(btn.parentElement.parentElement);
+            console.log(btn.parentElement);
+            document.querySelector("#TodoList").innerHTML = "";
+            updateTodo();
+        }
+        function updateTodo(){
+            todos.forEach(element => {
+                todolist.innerHTML += `<div><label class="badge text-bg-primary fs-3"><input type="checkbox" onclick="checkTodoDone(this.id)" id="` + changeNumToSay(element) +`"> `+ element.replaceAll('_', ' ') +`<button id="deleteButton" onclick="deleteTodo(this)"> X</button></label><br><div>`;
+            });
+        }
+
+
+        function changeNumToSay(inp){
+            let ret = inp;
+            const num_say = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
+            const num = Array.from(Array(10).keys());
+            for(let i = 0; i < 10; i++){
+                ret = ret.replaceAll(num[i], num_say[i]);
+            }
+            return ret;
+        }
+
+        function changeSayToNum(inp){
+            let ret = inp;
+            const num_say = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
+            const num = Array.from(Array(10).keys());
+            for(let i = 0; i < 10; i++){
+                ret = ret.replaceAll(num_say[i], num[i]);
+            }
+            return ret;
+        }
+    </script>
+</body>
+</html>
