@@ -2,6 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="57x57" href="asset/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="asset/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="asset/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="asset/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="asset/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="asset/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="asset/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="asset/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="asset/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="asset/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="asset/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="asset/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="asset/favicon-16x16.png">
+    <link rel="manifest" href="asset/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="asset/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
     <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
     <title>Simple Todo</title>
     <style>
@@ -15,13 +32,14 @@
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
-<body>
-    <div class="input-group mb-3">
+<body class="">
+    <div class="input-group mb-3 w-75 mx-auto fixed-bottom input-group-lg">
         <input type="text" class="form-control" id="text" aria-describedby="button-addon2">
         <button class="btn btn-outline-secondary" type="button" onclick="checkText()">Add</button>
     </div>
-    <div id="TodoList" name="123">
-        <br>
+    <span class="fs-1 mt-3" style="margin-left: 12.5%;">Todo:</span>
+    <div id="TodoList" class="" style="margin-left: 12.5%;" name="123">
+        
     </div>
     <script>
         let output = localStorage.getItem("todolist");
@@ -47,7 +65,7 @@
         function checkText(){
             const textbox = document.querySelector("#text");
             const todolist = document.querySelector("#TodoList");
-            if(!document.querySelector("#"+changeNumToSay(textbox.value.replaceAll(' ', '_')))){
+            if(!document.querySelector("#"+changeNumToSay(textbox.value))){
                 todolist.innerHTML += `<div><label class="badge text-bg-primary fs-3"><input type="checkbox" onclick="checkTodoDone(this.id)" id="` + changeNumToSay(textbox.value.replaceAll(' ', '_')) +`"> `+ textbox.value +`<button id="deleteButton" onclick="deleteTodo(this)"> X</button></label><br><div>`;
                 todos.push(textbox.value.replaceAll(' ', '_'));
                 localStorage.setItem("todolist", JSON.stringify(todos));
