@@ -70,6 +70,7 @@
                 todos.push(textbox.value.replaceAll(' ', '_'));
                 localStorage.setItem("todolist", JSON.stringify(todos));
             }
+            textbox.value = "";
         }
         function deleteTodo(elm){
             const del_todo = elm.parentElement.querySelector('input');
