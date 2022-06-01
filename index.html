@@ -29,10 +29,22 @@
         label{
             border: 1px solid black;
         }
+        #clock{
+            font-size: 1.25em;
+            /* text bold */
+            font-weight: bold;
+        }
+        #date{
+            font-size: 1em;
+            /* text bold */
+            font-weight: bold;
+        }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 <body class="">
+    <div id="date">2022.0asdasdasd6.01</div>
+    <div id="clock">00:00</div>
     <div class="input-group mb-3 w-75 mx-auto fixed-bottom input-group-lg">
         <input type="text" class="form-control" id="text" aria-describedby="button-addon2">
         <button class="btn btn-outline-secondary" type="button" onclick="checkText()">Add</button>
@@ -42,6 +54,40 @@
         
     </div>
     <script>
+
+        // simple clock function
+        // use copilot
+        function clock(){
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            var hour = date.getHours();
+            var min = date.getMinutes();
+            var sec = date.getSeconds();
+            if(min < 10){
+                min = "0" + min;
+            }
+            if(sec < 10){
+                sec = "0" + sec;
+            }
+            if(hour < 10){
+                hour = "0" + hour;
+            }
+            if(month < 10){
+                month = "0" + month;
+            }
+            if(day < 10){
+                day = "0" + day;
+            }
+            var clock_str = hour + ":" + min + ":" + sec;
+            var date_str = year + "." + month + "." + day;
+            document.getElementById("clock").innerHTML = clock_str;
+            document.getElementById("date").innerHTML = date_str;
+        }
+        clock();
+        setInterval(clock, 1000);
+
         let output = localStorage.getItem("todolist");
         let todos = JSON.parse(output);
         if(todos == null)
