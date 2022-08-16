@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
     <meta charset="UTF-8">
     <link rel="apple-touch-icon" sizes="57x57" href="asset/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="asset/apple-icon-60x60.png">
@@ -19,146 +18,61 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="asset/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
-    <title>Simple Todo</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div x-data="{ todos: [], inputTodo: '' }" x-init="if(JSON.parse(localStorage.getItem('todosList'))){todos=JSON.parse(localStorage.getItem('todosList'));}else{todos=[]}">
+        <!-- <span x-text="todos"></span> -->
+        <div class="field has-addons">
+            <input class="input" type="text" x-model="inputTodo"></input>
+            <button class="button is-primary" x-on:click="todos.push(inputTodo); localStorage.setItem('todosList', JSON.stringify(todos));">Add</button>
+        </div>
+        <ul>
+            <template x-for="todo in todos">
+                <li class="box is-size-4"  x-data="{checked: false, open: false}">
+                    <input class="checkbox p-2" type="checkbox" x-model="checked"> 
+                    <span x-text="todo" x-bind:class="{'end': checked}"></span>
+                    <button class="button is-danger is-pulled-right" x-on:click="todos.splice(todos.indexOf(todo), 1); localStorage.setItem('todosList', todos);">
+                        <span class="icon is-size-5 p-1">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </button>
+                    <button x-on:click="open = true;" class="button is-success is-pulled-right">
+                        <span class="icon is-size-5 p-1">
+                            <i class="fas fa-edit"></i>
+                        </span>
+                    </button>
+                    <div class="modal" x-bind:class="{'is-active': open}">
+                        <div class="modal-background"></div>
+                        <div class="modal-content" x-data="{editing: ''}">
+                            <div class="box is-rounded p-5">
+                                <div class="title">Edit...</div>
+                                <div class="field is-grouped">
+                                      <input x-model="editing" class="input" type="text" x-bind:placeholder="todo">
+                                      <button x-on:click="todos[todos.indexOf(todo)] = editing; open = false; localStorage.setItem('todosList', JSON.stringify(todos)); todo = editing; editing = '';" class="button is-success">
+                                        Edit
+                                      </button>
+                                  </div>
+                            </div>
+                        </div>
+                        <button class="modal-close is-large" aria-label="close" x-on:click="open = false;"></button>
+                    </div>
+                </li>
+            </template> 
+        </ul>
+    </div>
     <style>
-        body{
-            display: grid;
-            text-align: center;
+        .end{
+            text-decoration: line-through;
         }
-        label{
-            border: 1px solid black;
-        }
-        #clock{
-            font-size: 1.25em;
-            /* text bold */
-            font-weight: bold;
-        }
-        #date{
-            font-size: 1em;
-            /* text bold */
-            font-weight: bold;
+        input[type=checkbox] {
+            zoom: 1.5;
         }
     </style>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-</head>
-<body class="">
-    <div id="date">2022.0asdasdasd6.01</div>
-    <div id="clock">00:00</div>
-    <div class="input-group mb-3 w-75 mx-auto fixed-bottom input-group-lg">
-        <input type="text" class="form-control" id="text" aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" onclick="checkText()">Add</button>
-    </div>
-    <span class="fs-1 mt-3 fw-bold" style="margin-left: 12.5%;">Todo:</span>
-    <div id="TodoList" class="" style="margin-left: 12.5%;" name="123">
-        
-    </div>
-    <script>
-
-        // simple clock function
-        // use copilot
-        function clock(){
-            var date = new Date();
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
-            var hour = date.getHours();
-            var min = date.getMinutes();
-            var sec = date.getSeconds();
-            if(min < 10){
-                min = "0" + min;
-            }
-            if(sec < 10){
-                sec = "0" + sec;
-            }
-            if(hour < 10){
-                hour = "0" + hour;
-            }
-            if(month < 10){
-                month = "0" + month;
-            }
-            if(day < 10){
-                day = "0" + day;
-            }
-            var clock_str = hour + ":" + min + ":" + sec;
-            var date_str = year + "." + month + "." + day;
-            document.getElementById("clock").innerHTML = clock_str;
-            document.getElementById("date").innerHTML = date_str;
-        }
-        clock();
-        setInterval(clock, 1000);
-
-        let output = localStorage.getItem("todolist");
-        let todos = JSON.parse(output);
-        if(todos == null)
-            todos = [];
-        const todolist = document.querySelector("#TodoList");
-        todos.forEach(element => {
-            todolist.innerHTML += `<div><label class="badge text-bg-primary fs-3"><input type="checkbox" onclick="checkTodoDone(this.id)" id="` + changeNumToSay(element) +`"> ` + element.replaceAll('_', ' ') +`<button id="deleteButton" onclick="deleteTodo(this)"> X</button></label><br><div>`;
-        });
-
-        function checkTodoDone(id){
-            const checkbox = document.querySelector("#"+id);
-            if(checkbox.checked){
-                checkbox.parentElement.style.cssText =
-            "text-decoration: line-through;";
-            }else{
-                checkbox.parentElement.style.cssText =
-            "";
-            }
-                
-        }
-        function checkText(){
-            const textbox = document.querySelector("#text");
-            const todolist = document.querySelector("#TodoList");
-            if(!document.querySelector("#"+changeNumToSay(textbox.value))){
-                todolist.innerHTML += `<div><label class="badge text-bg-primary fs-3"><input type="checkbox" onclick="checkTodoDone(this.id)" id="` + changeNumToSay(textbox.value.replaceAll(' ', '_')) +`"> `+ textbox.value +`<button id="deleteButton" onclick="deleteTodo(this)"> X</button></label><br><div>`;
-                todos.push(textbox.value.replaceAll(' ', '_'));
-                localStorage.setItem("todolist", JSON.stringify(todos));
-            }
-            textbox.value = "";
-        }
-        function deleteTodo(elm){
-            const del_todo = elm.parentElement.querySelector('input');
-            let todos_del = todos.filter(function(data) {
-                return !(changeNumToSay(data) == del_todo.id);
-            });
-            console.log(todos_del);
-            todos = todos_del;
-            console.log(todos);
-            localStorage.setItem("todolist", JSON.stringify(todos));
-            const btn = document.querySelector("#"+elm.id);
-            console.log(btn.parentElement.parentElement);
-            console.log(btn.parentElement);
-            document.querySelector("#TodoList").innerHTML = "";
-            updateTodo();
-        }
-        function updateTodo(){
-            todos.forEach(element => {
-                todolist.innerHTML += `<div><label class="badge text-bg-primary fs-3"><input type="checkbox" onclick="checkTodoDone(this.id)" id="` + changeNumToSay(element) +`"> `+ element.replaceAll('_', ' ') +`<button id="deleteButton" onclick="deleteTodo(this)"> X</button></label><br><div>`;
-            });
-        }
-
-
-        function changeNumToSay(inp){
-            let ret = inp;
-            const num_say = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
-            const num = Array.from(Array(10).keys());
-            for(let i = 0; i < 10; i++){
-                ret = ret.replaceAll(num[i], num_say[i]);
-            }
-            return ret;
-        }
-
-        function changeSayToNum(inp){
-            let ret = inp;
-            const num_say = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
-            const num = Array.from(Array(10).keys());
-            for(let i = 0; i < 10; i++){
-                ret = ret.replaceAll(num_say[i], num[i]);
-            }
-            return ret;
-        }
-    </script>
 </body>
 </html>
